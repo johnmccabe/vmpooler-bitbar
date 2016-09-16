@@ -2,7 +2,7 @@
 
 ## What is this?
 
-Vmpooler-bitbar is a small ruby plugin for [@matryer's BitBar application](https://github.com/matryer/bitbar) build on top of [@braincain's vmfloaty](https://github.com/briancain/vmfloaty) which shows the status of all of your vmpooler instances and allows quick access to actions such as ssh'ing to a node or deleting an instance... and more.
+Vmpooler-bitbar is a small ruby plugin for [@matryer's BitBar application](https://github.com/matryer/bitbar) built on top of [@braincain's vmfloaty](https://github.com/briancain/vmfloaty) which shows the status of all of your vmpooler instances and allows quick access to actions such as ssh'ing to a node or deleting an instance... and more.
 
 Too much talk, have a look at it in action.
 
