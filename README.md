@@ -69,7 +69,7 @@ If after making the changes above the OSX Terminal continues to open then you sh
 
 ## Troubleshooting
 
-### Errors throwing during brew install
+### Errors thrown during brew install
 If you encounter the following error:
 
     Error: Cask 'bitbar' definition is invalid: Bad header line: parse failed
