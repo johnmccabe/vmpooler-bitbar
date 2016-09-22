@@ -65,6 +65,9 @@ vmpooler | <%= header_params %>
 -- Action | <%= submenu_header_params %>
 -- SSH to VM | href='ssh://root@<%= vm[:fqdn] %>' <%= terminal_action_params %>
 -- Delete VM | bash=<%= this_script %> param1=delete param2=<%= vm[:hostname] %> <%= refresh_action_params %>
+<%     if vm.key?(:pe_console) -%>
+-- Open PE Console | href='<%= vm[:pe_console] %>' <%= submenu_item_font_size %>
+<%     end                     -%>
 -----
 -- Extend Lifetime (<%= extend_lifetime_hours %>h) | bash=<%= this_script %> param1=extend param2=<%= vm[:hostname] %> <%= refresh_action_params %>
 -----
@@ -135,6 +138,9 @@ EOS
               vm[:tags] = details['tags']
               if vm[:tags].key?('name')
                 vm[:name] = vm[:tags]['name']
+              end
+              if vm[:tags].key?('roles') && vm[:tags]['roles'].include?('dashboard')
+                vm[:pe_console] = "https://#{vm[:fqdn]}"
               end
             end
           end
