@@ -61,7 +61,7 @@ vmpooler | <%= header_params %>
 <% if !vms.nil? -%>
 <%   vms.each do |vm| -%>
 <%     remaining_time_colour = vm[:remaining] <= warning_timeleft_threshhold ? 'red' : 'green' -%>
-<%= vm[:hostname] %> (<%= vm[:template] %>) | color=<%= remaining_time_colour %> <%= copy_menu_text_params(vm[:fqdn]) %>
+<%= vm[:hostname] %> (<%= vm[:name] %>) | color=<%= remaining_time_colour %> <%= copy_menu_text_params(vm[:fqdn]) %>
 -- Action | <%= submenu_header_params %>
 -- SSH to VM | href='ssh://root@<%= vm[:fqdn] %>' <%= terminal_action_params %>
 -- Delete VM | bash=<%= this_script %> param1=delete param2=<%= vm[:hostname] %> <%= refresh_action_params %>
@@ -127,11 +127,15 @@ EOS
               vm[:lifetime] = details['lifetime']
               vm[:running] = details['running']
               vm[:remaining] = vm[:lifetime] - vm[:running]
+              vm[:name] = vm[:template]
 
               expiring_soon = expiring_soon || vm[:remaining] <= warning_timeleft_threshhold ? true : false
 
               next unless details.key?('tags')
               vm[:tags] = details['tags']
+              if vm[:tags].key?('name')
+                vm[:name] = vm[:tags]['name']
+              end
             end
           end
           # Sort, newer vms first
