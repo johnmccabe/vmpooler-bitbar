@@ -6,14 +6,30 @@ require 'vmfloaty/auth'
 require 'vmfloaty/conf'
 require 'vmfloaty/pooler'
 require 'vmfloaty/utils'
+require 'vmfloaty/version'
 
 class VmpoolerBitbar
   include Commander::Methods
+  # Minimum supported vmfloaty version
 
   def run
     program :name, 'vmpooler-bitbar'
     program :version, '1.0.0'
     program :description, 'VMPooler BitBar plugin based on vmfloaty.'
+
+    # Check vmfloaty library version
+    min_vmfloaty_version = '0.7.0'
+    if Gem::Version.new(Version.get) < Gem::Version.new(min_vmfloaty_version)
+      puts '🔥 Update vmfloaty',
+            '---',
+            "Please update vmfloaty to a version > #{min_vmfloaty_version}",
+            "Current version is #{Version.get}",
+            '---',
+            'Refresh... | refresh=true'
+      exit 1
+    end
+
+
 
     config = Conf.read_config
     vmpooler_url = config['url']
