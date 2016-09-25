@@ -101,10 +101,17 @@ Refresh... | refresh=true
 EOS
 
         # Check connectivity and get running vms
-        status = Auth.token_status(false, vmpooler_url, token)
-        # Needs a tweak to vmfloaty to not exit within Auth lib - pending
-        if status['ok'] == false
-          abort('Unable to connect to vmpooler.\nPlease check that vmfloaty is correctly configured.')
+        begin
+          status = Auth.token_status(false, vmpooler_url, token)
+        rescue TokenError => msg
+          puts '🔥 Token Error',
+               '---',
+               "#{msg}",
+               'Check your ~/.vmfloaty.yml|href=https://github.com/briancain/vmfloaty#vmfloaty-dotfile',
+               'Click for info|href=https://github.com/briancain/vmfloaty#vmfloaty-dotfile',
+               '---',
+               'Refresh... | refresh=true'
+          exit 1
         end
 
         vms = {}
