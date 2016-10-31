@@ -55,12 +55,14 @@ class VmpoolerBitbar
       c.description = 'Prints bitbar menu string'
       c.action do |args, options|
         logo_base64 = 'R0lGODlhIAAgAPQAAP+uGv+uG/+vG/+uHP+vHP+vHf+vHv+vH/+wHv+wH/+wIP+xIf+xIv+xI/+xJf+yJP+zJ/6yKf60LAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAABMALAAAAAAgACAAAAWW4CSOZGmeaKqubIsSQSwTrhoAA0EAQFCngUFEZOj9UAGaKGE8mpIjps9ZuhUOiZuBWuV5AUquqDAoCxIFsDhVDK9LaQKjQWdA3pP0F4DAN/YACX6Agm9/e4Vrh1+JYnpffWsHOAqVlQ6SOIoLnAsPRQNvN3sCeDcEBQVWpmGTU2tQS02wAxJEs2KnBnqvuYC9eMHCwyshADs='
+        progress_bar_map = ['███▏', '██▊▏', '██▋▏', '██▌▏', '██▍▏', '██▎▏', '██▏▏', '██ ▏', '█▉ ▏', '█▊ ▏', '█▋ ▏', '█▌ ▏', '█▍ ▏', '█▎ ▏', '█▏ ▏', '█  ▏', '▉  ▏', '▊  ▏', '▋  ▏', '▌  ▏', '▍  ▏', '▎  ▏', '▏  ▏']
 
         # Menu Item Formatting Parameters - see https://github.com/matryer/bitbar#plugin-api
         header_params = "size=22 font='Arial Bold' templateImage=#{logo_base64}"
         submenu_item_font_size = 'size=12'
         submenu_header_font_size = 'size=14'
         submenu_header_params = "font='Arial Bold' #{submenu_header_font_size}"
+        fixed_font_header_params = "font=Menlo-Regular #{submenu_header_font_size}"
         fixed_font_params = "font=Menlo-Regular #{submenu_item_font_size}"
         terminal_action_params = "terminal=true #{submenu_item_font_size}"
         refresh_action_params = "terminal=false refresh=true #{submenu_item_font_size}"
@@ -75,7 +77,7 @@ vmpooler | <%= header_params %>
 <% if !vms.nil? -%>
 <%   vms.each do |vm| -%>
 <%     remaining_time_colour = vm[:remaining] <= warning_timeleft_threshhold ? 'red' : 'green' -%>
-<%= vm[:hostname] %> (<%= vm[:name] %>) | color=<%= remaining_time_colour %> <%= copy_menu_text_params(vm[:fqdn]) %>
+<%= vm[:timebar] %><%= vm[:hostname] %> (<%= vm[:name] %>) | <%= fixed_font_header_params %> color=<%= remaining_time_colour %> <%= copy_menu_text_params(vm[:fqdn]) %>
 -- Action | <%= submenu_header_params %>
 -- SSH to VM | href='ssh://root@<%= vm[:fqdn] %>' <%= terminal_action_params %>
 -- Delete VM | bash=<%= this_script %> param1=delete param2=<%= vm[:hostname] %> <%= refresh_action_params %>
@@ -144,6 +146,7 @@ EOS
             # Build hash of vms and details
             vms.each do |vm|
               details = Pooler.query(false, vmpooler_url, vm[:hostname])[vm[:hostname]]
+              vm[:timebar] = progress_bar_map[(details['running'] * (progress_bar_map.length - 1)/details['lifetime']).floor]
               vm[:template] = details['template']
               vm[:ip] = details['ip']
               vm[:domain] = details['domain']
