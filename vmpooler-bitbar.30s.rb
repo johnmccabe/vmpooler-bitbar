@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# SPDX-License-Identifier:    Apache-2.0
 
 require 'erb'
 require 'commander'
