@@ -131,6 +131,14 @@ EOS
                '---',
                'Refresh... | refresh=true'
           exit 1
+        rescue Faraday::ConnectionFailed => msg
+          puts '⚡️ Connection Error',
+               '---',
+               'Unable to estalish connection to VMPooler.',
+               msg.to_s,
+               '---',
+               'Refresh... | refresh=true'
+          exit 1
         end
 
         vms = {}
