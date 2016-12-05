@@ -50,6 +50,10 @@ class VmpoolerBitbar
       "bash=/bin/bash param1=-c param2='echo -n #{menu_text} | pbcopy' terminal=false"
     end
 
+    def ssh_user(vm)
+      vm[:template].start_with?('win') ? 'Administrator' : 'root'
+    end
+
     command :menu do |c|
       c.syntax = 'vmpooler-bitbar menu'
       c.description = 'Prints bitbar menu string'
@@ -79,7 +83,7 @@ vmpooler | <%= header_params %>
 <%     remaining_time_colour = vm[:remaining] <= warning_timeleft_threshhold ? 'red' : 'green' -%>
 <%= vm[:timebar] %><%= vm[:hostname] %> (<%= vm[:name] %>) | <%= fixed_font_header_params %> color=<%= remaining_time_colour %> <%= copy_menu_text_params(vm[:fqdn]) %>
 -- Action | <%= submenu_header_params %>
--- SSH to VM | href='ssh://root@<%= vm[:fqdn] %>' <%= terminal_action_params %>
+-- SSH to VM | href='ssh://<%= ssh_user(vm) %>@<%= vm[:fqdn] %>' <%= terminal_action_params %>
 -- Delete VM | bash=<%= this_script %> param1=delete param2=<%= vm[:hostname] %> <%= refresh_action_params %>
 <%     if vm.key?(:pe_console) -%>
 -- Open PE Console | href='<%= vm[:pe_console] %>' <%= submenu_item_font_size %>
