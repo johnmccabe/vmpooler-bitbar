@@ -50,6 +50,19 @@ class VmpoolerBitbar
       "bash=/bin/bash param1=-c param2='echo -n #{menu_text} | pbcopy' terminal=false"
     end
 
+    def get_display_name(vm)
+      # list of roles which override the vm[:name] displayed
+      flagged_roles = ['vanagon_target']
+      if vm[:tags].key?('roles')
+        flagged_roles.each do | flagged_role |
+          if vm[:tags]['roles'].include?(flagged_role)
+            return flagged_role
+          end
+        end
+      end
+      vm[:name]
+    end
+
     command :menu do |c|
       c.syntax = 'vmpooler-bitbar menu'
       c.description = 'Prints bitbar menu string'
@@ -77,7 +90,7 @@ vmpooler | <%= header_params %>
 <% if !vms.nil? -%>
 <%   vms.each do |vm| -%>
 <%     remaining_time_colour = vm[:remaining] <= warning_timeleft_threshhold ? 'red' : 'green' -%>
-<%= vm[:timebar] %><%= vm[:hostname] %> (<%= vm[:name] %>) | <%= fixed_font_header_params %> color=<%= remaining_time_colour %> <%= copy_menu_text_params(vm[:fqdn]) %>
+<%= vm[:timebar] %><%= vm[:hostname] %> (<%= get_display_name(vm) %>) | <%= fixed_font_header_params %> color=<%= remaining_time_colour %> <%= copy_menu_text_params(vm[:fqdn]) %>
 -- Action | <%= submenu_header_params %>
 -- SSH to VM | href='ssh://root@<%= vm[:fqdn] %>' <%= terminal_action_params %>
 -- Delete VM | bash=<%= this_script %> param1=delete param2=<%= vm[:hostname] %> <%= refresh_action_params %>
