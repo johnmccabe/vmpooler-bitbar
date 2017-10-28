@@ -53,7 +53,7 @@ class VmpoolerBitbar
     def get_display_name(vm)
       # list of roles which override the vm[:name] displayed
       flagged_roles = ['vanagon_target']
-      if vm[:tags].key?('roles')
+      if vm[:tags] && vm[:tags].key?('roles')
         flagged_roles.each do | flagged_role |
           if vm[:tags]['roles'].include?(flagged_role)
             return flagged_role
