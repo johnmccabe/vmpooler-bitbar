@@ -20,11 +20,11 @@ class VmpoolerBitbar
 
     # Check vmfloaty library version
     min_vmfloaty_version = '0.7.0'
-    if Gem::Version.new(Version.get) < Gem::Version.new(min_vmfloaty_version)
+    if Gem::Version.new(Vmfloaty::VERSION) < Gem::Version.new(min_vmfloaty_version)
       puts '🔥 Update vmfloaty',
            '---',
            "Please update vmfloaty to a version > #{min_vmfloaty_version}",
-           "Current version is #{Version.get}",
+           "Current version is #{Vmfloaty::VERSION}",
            '---',
            'Refresh... | refresh=true'
       exit 1
