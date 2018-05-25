@@ -1,6 +1,22 @@
 #!/usr/bin/env ruby
 # SPDX-License-Identifier:    Apache-2.0
 
+# The first time this script runs it will be with system Ruby (gross).
+unless ENV['USING_RVM']
+  # Re-run this script with RVM's default Ruby, after setting up the RVM path,
+  # and setting USING_RVM to true, so that this sentry code won't run the second
+  # time through.
+  system(
+    <<-EOF
+      export USING_RVM=true
+      export PATH="~/.rvm/bin:$PATH"
+      rvm-auto-ruby #{File.expand_path(__FILE__)}
+    EOF
+  )
+  # Return the exit code from running the script with RVM:
+  exit $?.exitstatus.to_i
+end
+
 require 'erb'
 require 'commander'
 require 'vmfloaty/auth'
