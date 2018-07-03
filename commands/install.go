@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -51,6 +52,11 @@ func runInstall(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
+	if err := deleteOldSymlinks(pluginDir, "vmpooler-bitbar"); err != nil {
+		fmt.Printf("Error thrown deleting old bitbar symlinks? %v", err)
+		os.Exit(1)
+	}
+
 	pluginSymlink := fmt.Sprintf("%s/vmpooler-bitbar.%s", pluginDir, answers.RefreshRate)
 
 	err = os.Symlink(ex, pluginSymlink)
@@ -59,6 +65,19 @@ func runInstall(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
+}
+
+func deleteOldSymlinks(pluginDir, pluginRoot string) error {
+	files, err := filepath.Glob(fmt.Sprintf("%s/%s.*", pluginDir, pluginRoot))
+	if err != nil {
+		return err
+	}
+	for _, f := range files {
+		if err := os.Remove(f); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func getPluginDir() (string, error) {
