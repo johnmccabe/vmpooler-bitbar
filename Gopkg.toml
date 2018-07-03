@@ -1,0 +1,11 @@
+[[constraint]]
+  name = "github.com/johnmccabe/go-bitbar"
+  version = "0.3.0"
+
+[[constraint]]
+  name = "github.com/johnmccabe/go-vmpooler"
+  version = "0.0.3"
+
+[prune]
+  go-tests = true
+  unused-packages = true
