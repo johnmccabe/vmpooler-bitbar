@@ -2,7 +2,7 @@
 
 ## What is this?
 
-Vmpooler-bitbar is a small ruby plugin for [@matryer's BitBar application](https://github.com/matryer/bitbar) built on top of [@braincain's vmfloaty](https://github.com/briancain/vmfloaty) which shows the status of all of your vmpooler instances and allows quick access to actions such as ssh'ing to a node or deleting an instance... and more.
+Vmpooler-bitbar is plugin for [@matryer's BitBar application](https://github.com/matryer/bitbar) built on top of the [go-bitbar](https://github.com/johnmccabe/go-bitbar), and [go-vmpooler](https://github.com/johnmccabe/go-vmpooler) libraries which shows the status of all of your vmpooler instances and allows quick access to actions such as ssh'ing to a node or deleting an instance... and more.
 
 Too much talk, have a look at it in action.
 
@@ -10,26 +10,28 @@ Too much talk, have a look at it in action.
 
 ## Features
 
-- updates every `30s`, see [here](https://github.com/matryer/bitbar#configure-the-refresh-time) if you want to change the refresh interval - I don't recommend setting it lower than 30s.
-- shows all active vms created using your token
-- vms with < 1hr before their deletion are highlighted in red
-- quick access to some details of each vm, tags etc
-- ssh directly to a vm from the menu
+- [x] updates every `30s`, see
+- [x] shows all active vms created using your token
+- [x] vms with < 1hr before their deletion are highlighted in red
+- [x] quick access to some details of each vm
+  - [ ] Display Tags
+  - [ ] Detect Frankenbuilt PE instances
+- [x] ssh directly to a vm from the menu
   - OSX Terminal supported by default
   - [iTerm2 can be used instead](#using-iterm2-instead-of-osx-terminal)
-- delete a vm from the menu
-- extend the lifetime of a vm from the menu
-- delete all vms from the menu
-- extend the lifetime of all vms from the menu
-- [click on an item to copy it to the clipboard](#copying-hostname-etc)
-- create a new vm from the menu (available templates pulled from vmpooler, with new vms tagged with `created_by=vmpooler-bitbar`)
-- integrates with the OSX Notification Centre
+- [x] delete a vm from the menu
+- [x] extend the lifetime of a vm from the menu
+- [x] delete all vms from the menu
+- [x] extend the lifetime of all vms from the menu
+- [x] [click on an item to copy it to the clipboard](#copying-hostname-etc)
+- [x] create a new vm from the menu (available templates pulled from vmpooler, with new vms tagged with `created_by=vmpooler-bitbar`)
+- [ ] integrates with the OSX Notification Centre
 
 ## Getting Started
 
 ### Prerequisites
 
-- vmfloaty should be installed and configured, with the vmpooler `url`, `user` and `token` set in your `~/.vmfloaty.yml` config file (see the [vmfloaty docs](https://github.com/briancain/vmfloaty#example-workflow) for information on obtaining a token). If you are able to run `floaty token status` then you should be good to go.
+- You must have a vmpooler token, refer to the vmfloaty documentation/confluence for instructions.
 - for the SSH to vmpooler instance action to work you should have the vmpooler ssh key added to the ssh agent, `ssh-add /path/to/priv/key`.
 
 ### Install BitBar
@@ -46,11 +48,35 @@ If this is your first time installing BitBar you will be prompted to choose/crea
 
 Any executable scripts copied to this directory will be rendered in the menubar by BitBar and it is here we will copy the vmpooler-bitbar script.
 
-### Add the vmpooler-bitbar plugin
+### Install vmpooler-bitbar
 
-Copy `vmpooler-bitbar.30s.rb` to your BitBar plugins directory.
+Install using the provider Homebrew tap.
 
-From the BitBar menu select `refresh all` to have BitBar rescan the plugins directory and you should see the `VM: <number of vms>` appear in your menubar.
+    $ brew tap johnmccabe/vmpooler-bitbar
+    $ brew install vmpooler-bitbar
+
+### Configuring
+
+Before vmpooler-bitbar becomes available you must configure the plugin:
+
+    $ vmpooler-bitbar config
+
+Follow the prompts, pressing `?` for more details of each field, you will be prompted for the following:
+
+- vmpooler API endpoint (for example, `https://vmpooler.mycompany.net/api/v1`)
+- vmpooler token (for example, `kpy2fn8sgjkcbyn896yilzqxwjlnfake`)
+
+Once configured you can then make the plugin available to BitBar:
+
+    $ vmpooler-bitbar install
+
+You will be prompted for a refresh interval, I recommend using the default `30s` recommendation.
+
+If you wish to alter the refresh interval you can just run the `vmpooler-bitbar install` command a second time.
+
+Note: When installing for the fist time you will need to manually restart the BitBar App, or select Preferences/Refresh all from its dropdowns.
+
+### 
 
 ## Tips
 
