@@ -10,7 +10,7 @@ Too much talk, have a look at it in action.
 
 ## Features
 
-- [x] updates every `30s`, see
+- [x] updates with a configurable period
 - [x] shows all active vms created using your token
 - [x] vms with < 1hr before their deletion are highlighted in red
 - [x] quick access to some details of each vm
@@ -31,7 +31,7 @@ Too much talk, have a look at it in action.
 
 ### Prerequisites
 
-- You must have a vmpooler token, refer to the vmfloaty documentation/confluence for instructions.
+- You must have a vmpooler token, see [generating a token](#generating-a-token) if you don't already have one.
 - for the SSH to vmpooler instance action to work you should have the vmpooler ssh key added to the ssh agent, `ssh-add /path/to/priv/key`.
 
 ### Install BitBar
@@ -55,13 +55,29 @@ Install using the provider Homebrew tap.
     $ brew tap johnmccabe/vmpooler-bitbar
     $ brew install vmpooler-bitbar
 
+### Generating a Token
+
+IF you already have a token you can jump to the next section, if not run the following command:
+
+    $ vmpooler-bitbar token
+
+Follow the prompts, you will be asked for the following:
+
+- vmpooler API endpoint (for example, `https://vmpooler.mycompany.net/api/v1`)
+- username (your LDAP username, for example `joe.bloggs`)
+- password (your LDAP password, for example, `password1`)
+
+Your token will be printed to stdout:
+
+    Token generated: pop448v0ztnwta3c964pifngrmk8ea4u
+
 ### Configuring
 
 Before vmpooler-bitbar becomes available you must configure the plugin:
 
     $ vmpooler-bitbar config
 
-Follow the prompts, pressing `?` for more details of each field, you will be prompted for the following:
+Follow the prompts, pressing `?` for more details of each field, you will be asked for the following:
 
 - vmpooler API endpoint (for example, `https://vmpooler.mycompany.net/api/v1`)
 - vmpooler token (for example, `kpy2fn8sgjkcbyn896yilzqxwjlnfake`)
