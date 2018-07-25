@@ -2,6 +2,7 @@ package commands
 
 import (
 	"fmt"
+	"net/url"
 	"os"
 	"sort"
 	"strings"
@@ -45,12 +46,12 @@ func runMenu(cmd *cobra.Command, args []string) {
 
 	templates, err := vmclient.ListTemplates()
 	if err != nil {
-		fmt.Println("error getting templates: %s", err)
+		errorMenu(err)
 	}
 
 	virtualmachines, err := vmclient.GetAll()
 	if err != nil {
-		fmt.Println("error getting virtualmachines: %s", err)
+		errorMenu(err)
 	}
 
 	plugin := bitbar.New()
@@ -224,4 +225,21 @@ func createNewVMMap(templates []string) map[string][]string {
 func getTemplateOS(template string) string {
 	parts := strings.Split(template, "-")
 	return parts[0]
+}
+
+func errorMenu(err error) {
+	var errMsg string
+
+	switch err.(type) {
+	case *url.Error:
+		errMsg = "Unable to connect to VMPooler"
+	default:
+		errMsg = fmt.Sprintf("%s ...", err.Error()[:12])
+	}
+	plugin := bitbar.New()
+	plugin.StatusLine("VMs: ⛔️").Color("red")
+	menu := plugin.NewSubMenu()
+	menu.Line(errMsg).CopyToClipboard(err.Error())
+	fmt.Print(plugin.Render())
+	os.Exit(1)
 }
