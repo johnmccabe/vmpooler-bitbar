@@ -4,7 +4,7 @@
 
 Vmpooler-bitbar is plugin for [@matryer's BitBar application](https://github.com/matryer/bitbar) built on top of the [go-bitbar](https://github.com/johnmccabe/go-bitbar), and [go-vmpooler](https://github.com/johnmccabe/go-vmpooler) libraries which shows the status of all of your vmpooler instances and allows quick access to actions such as ssh'ing to a node or deleting an instance... and more.
 
-Too much talk, have a look at it in action.
+Too much talk, have a look at it in action:
 
 ![demo video showing vmpooler-bitbar in action](https://raw.githubusercontent.com/johnmccabe/vmpooler-bitbar/gh-pages/images/vmpooler-bitbar.gif)
 
