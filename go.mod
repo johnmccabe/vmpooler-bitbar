@@ -30,5 +30,5 @@ require (
 	golang.org/x/sys v0.0.0-20180627142611-7138fd3d9dc8 // indirect
 	golang.org/x/text v0.3.0 // indirect
 	gopkg.in/AlecAivazis/survey.v1 v1.6.0
-	gopkg.in/yaml.v2 v2.2.1
+	gopkg.in/yaml.v2 v2.2.8
 )
